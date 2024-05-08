@@ -16,7 +16,7 @@ int main() {
     std::cout << (t.find(4) ? "Found\n" : "Not Found\n");
     std::cout << (t.find(1029) ? "Found\n" : "Not Found\n");
 
-    const Node<int> *result = t.lte_max(47);
+    const TreapNode<int> *result = t.lte_max(47);
     std::cout << result->data << "\n";
     result = t.mte_min(48);
     std::cout << result->data << "\n";

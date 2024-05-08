@@ -6,17 +6,17 @@
 
 template<typename T>
 class Treap final : public Tree<T> {
-    Node<T> *root;
-    Node<T> *insert(Node<T> *node, T value);
-    Node<T> *remove(Node<T> *node, T value);
-    Node<T> *right_rotate(Node<T> *y);
-    Node<T> *left_rotate(Node<T> *x);
-    Node<T> *lte_max(Node<T> *node, T value);
-    Node<T> *mte_min(Node<T> *node, T value);
+    TreapNode<T> *root;
+    TreapNode<T> *insert(TreapNode<T> *node, T value);
+    TreapNode<T> *remove(TreapNode<T> *node, T value);
+    TreapNode<T> *right_rotate(TreapNode<T> *y);
+    TreapNode<T> *left_rotate(TreapNode<T> *x);
+    TreapNode<T> *lte_max(TreapNode<T> *node, T value);
+    TreapNode<T> *mte_min(TreapNode<T> *node, T value);
 
-    static Node<T> *find(Node<T> *node, T value);
-    void print(Node<T> *node) const;
-    void print(Node<T> *node, T X, T Y) const;
+    static TreapNode<T> *find(TreapNode<T> *node, T value);
+    void print(TreapNode<T> *node) const;
+    void print(TreapNode<T> *node, T X, T Y) const;
     void clear(Node<T> *node);
 
 public:
@@ -28,8 +28,8 @@ public:
     bool find(const T &value) const override;
     void print() const override;
     void print(T X, T Y) const override;
-    Node<T> *lte_max(T value);
-    Node<T> *mte_min(T value);
+    TreapNode<T> *lte_max(T value);
+    TreapNode<T> *mte_min(T value);
 };
 
 #include "../src/Treap.tpp"

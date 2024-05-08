@@ -7,11 +7,18 @@ template<typename T>
 class Node {
 public:
     T data;
-    int priority;
     Node *left;
     Node *right;
 
-    explicit Node(T value) : data(value), priority(rand() % 65535),left(nullptr), right(nullptr) {}
+    explicit Node(T value) : data(value), left(nullptr), right(nullptr) {}
+};
+
+template<typename T>
+class TreapNode : public Node<T> {
+public:
+    int priority;
+
+    explicit TreapNode(T value) : Node<T>(value), priority(rand() % 65535) {}
 };
 
 #endif //NODE_H

@@ -15,17 +15,17 @@ void Treap<T>::insert(const T &value) {
 }
 
 template<typename T>
-Node<T> *Treap<T>::insert(Node<T> *node, T value) {
+TreapNode<T> *Treap<T>::insert(TreapNode<T> *node, T value) {
     if(!node)
-        return new Node<T>(value);
+        return new TreapNode<T>(value);
 
     if(value < node->data) {
-        node->left = insert(node->left, value);
-        if(node->left->priority > node->priority)
+        node->left = insert(static_cast<TreapNode<T> *>(node->left), value);
+        if (static_cast<TreapNode<T>*>(node->left)->priority > node->priority)
             node = right_rotate(node);
     } else {
-        node->right = insert(node->right, value);
-        if(node->right->priority > node->priority)
+        node->right = insert(static_cast<TreapNode<T>*>(node->right), value);
+        if (static_cast<TreapNode<T>*>(node->right)->priority > node->priority)
             node = left_rotate(node);
     }
     return node;
@@ -37,30 +37,30 @@ void Treap<T>::remove(const T &value) {
 }
 
 template<typename T>
-Node<T> *Treap<T>::remove(Node<T> *node, T value) {
-    if(!node)
+TreapNode<T> *Treap<T>::remove(TreapNode<T> *node, T value) {
+    if (!node)
         return nullptr;
 
-    if(value < node->data)
-        node->left = remove(node->left, value);
-    else if(value > node->data)
-        node->right = remove(node->right, value);
-    else {
-        if(!node->left) {
-            Node<T> *temp = node->right;
+    if (value < node->data) {
+        node->left = remove(static_cast<TreapNode<T>*>(node->left), value);
+    } else if (value > node->data) {
+        node->right = remove(static_cast<TreapNode<T>*>(node->right), value);
+    } else {
+        if (!node->left) {
+            auto *temp = static_cast<TreapNode<T>*>(node->right);
             delete node;
-            node = temp;
-        } else if(!node->right) {
-            Node<T> *temp = node->left;
+            return temp;
+        } else if (!node->right) {
+            auto *temp = static_cast<TreapNode<T>*>(node->left);
             delete node;
-            node = temp;
+            return temp;
         } else {
-            if(node->left->priority > node->right->priority) {
+            if (static_cast<TreapNode<T>*>(node->left)->priority > static_cast<TreapNode<T>*>(node->right)->priority) {
                 node = right_rotate(node);
-                node->right = remove(node->right, value);
+                node->right = remove(static_cast<TreapNode<T>*>(node->right), value);
             } else {
                 node = left_rotate(node);
-                node->left = remove(node->left, value);
+                node->left = remove(static_cast<TreapNode<T>*>(node->left), value);
             }
         }
     }
@@ -68,45 +68,45 @@ Node<T> *Treap<T>::remove(Node<T> *node, T value) {
 }
 
 template<typename T>
-Node<T> *Treap<T>::right_rotate(Node<T> *y) {
-    Node<T> *aux = y->left;
+TreapNode<T> *Treap<T>::right_rotate(TreapNode<T> *y) {
+    auto *aux = static_cast<TreapNode<T> *>(y->left);
     y->left = aux->right;
     aux->right = y;
     return aux;
 }
 
 template<typename T>
-Node<T> *Treap<T>::left_rotate(Node<T> *x) {
-    Node<T> *aux = x->right;
+TreapNode<T> *Treap<T>::left_rotate(TreapNode<T> *x) {
+    auto *aux = static_cast<TreapNode<T> *>(x->right);
     x->right = aux->left;
     aux->left = x;
     return aux;
 }
 
 template<typename T>
-Node<T> * Treap<T>::lte_max(Node<T> *node, T value) {
-    Node<T> *result = nullptr;
-    while(node) {
-        if(node->data <= value) {
-            if(!result || node->data > result->data)
+TreapNode<T> *Treap<T>::lte_max(TreapNode<T> *node, T value) {
+    TreapNode<T> *result = nullptr;
+    while (node) {
+        if (node->data <= value) {
+            if (!result || node->data > result->data)
                 result = node;
-            node = node->right;
+            node = static_cast<TreapNode<T>*>(node->right);
         } else {
-            node = node->left;
+            node = static_cast<TreapNode<T>*>(node->left);
         }
     }
     return result;
 }
 
 template<typename T>
-Node<T> * Treap<T>::mte_min(Node<T> *node, T value) {
-    Node<T> *result = nullptr;
-    while(node) {
-        if(node->data >= value) {
+TreapNode<T> *Treap<T>::mte_min(TreapNode<T> *node, T value) {
+    TreapNode<T> *result = nullptr;
+    while (node) {
+        if (node->data >= value) {
             result = node;
-            node = node->left;
+            node = static_cast<TreapNode<T>*>(node->left);
         } else {
-            node = node->right;
+            node = static_cast<TreapNode<T>*>(node->right);
         }
     }
     return result;
@@ -118,14 +118,14 @@ bool Treap<T>::find(const T &value) const {
 }
 
 template<typename T>
-Node<T> *Treap<T>::find(Node<T> *node, T value) {
-    while(node) {
-        if(value == node->data)
+TreapNode<T> *Treap<T>::find(TreapNode<T> *node, T value) {
+    while (node) {
+        if (value == node->data)
             return node;
-        if(value < node->data)
-            node = node->left;
+        if (value < node->data)
+            node = static_cast<TreapNode<T>*>(node->left);
         else
-            node = node->right;
+            node = static_cast<TreapNode<T>*>(node->right);
     }
     return nullptr;
 }
@@ -137,11 +137,11 @@ void Treap<T>::print() const {
 }
 
 template<typename T>
-void Treap<T>::print(Node<T> *node) const {
+void Treap<T>::print(TreapNode<T> *node) const {
     if(node) {
-        print(node->left);
+        print(static_cast<TreapNode<T>*>(node->left));
         std::cout << node->data << " ";
-        print(node->right);
+        print(static_cast<TreapNode<T>*>(node->right));
     }
 }
 
@@ -152,33 +152,33 @@ void Treap<T>::print(T X, T Y) const {
 }
 
 template<typename T>
-Node<T> * Treap<T>::lte_max(T value) {
+TreapNode<T> * Treap<T>::lte_max(T value) {
     return lte_max(root, value);
 }
 
 template<typename T>
-Node<T> * Treap<T>::mte_min(T value) {
+TreapNode<T> * Treap<T>::mte_min(T value) {
     return mte_min(root, value);
 }
 
 template<typename T>
-void Treap<T>::print(Node<T> *node, T X, T Y) const {
-    if(node) {
-        if(node->data >= X) {
-            print(node->left, X, Y);
+void Treap<T>::print(TreapNode<T> *node, T X, T Y) const {
+    if (node) {
+        if (node->data >= X) {
+            print(static_cast<TreapNode<T>*>(node->left), X, Y);
         }
-        if(node->data >= X && node->data <= Y) {
+        if (node->data >= X && node->data <= Y) {
             std::cout << node->data << " ";
         }
-        if(node->data <= Y) {
-            print(node->right, X, Y);
+        if (node->data <= Y) {
+            print(static_cast<TreapNode<T>*>(node->right), X, Y);
         }
     }
 }
 
 template<typename T>
 void Treap<T>::clear(Node<T> *node) {
-    if(node) {
+    if (node) {
         clear(node->left);
         clear(node->right);
         delete node;
