@@ -9,4 +9,7 @@ add_executable(trees main.cpp
         include/Node.h
         include/Treap.h
         include/Tree.h
-        src/Treap.tpp)
+        src/Treap.tpp
+        include/SplayTree.h
+        src/SplayTree.tpp
+)
