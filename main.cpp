@@ -1,28 +1,75 @@
 #include <iostream>
+#include <fstream>
+#include <chrono>
 #include "include/Treap.h"
 #include "include/SplayTree.h"
 
+void testTreap(int size, std::ofstream& outputFile) {
+    Treap<int> treap;
+    auto start = std::chrono::steady_clock::now();
+
+    // for insertion
+    for(int i=0; i < size; i++) {
+        treap.insert(rand());
+    }
+    auto end = std::chrono::steady_clock::now();
+    std::cout << "Treap - Insertion for " << size << " elements: " << std::chrono::duration<double, std::milli>(end-start).count() << " ms\n";
+    outputFile << std::chrono::duration<double, std::milli>(end-start).count() << ",";
+
+    // for deletion
+    for(int i=0; i < size; i++) {
+        treap.remove(rand());
+    }
+    end = std::chrono::steady_clock::now();
+    std::cout << "Treap - Deletion for " << size << " elements: " << std::chrono::duration<double, std::milli>(end-start).count() << " ms\n";
+    outputFile << std::chrono::duration<double, std::milli>(end-start).count() << ",";
+
+    // for find
+    for(int i=0; i < size; i++) {
+        treap.find(rand());
+    }
+    end = std::chrono::steady_clock::now();
+    std::cout << "Treap - Find for " << size << " elements: " << std::chrono::duration<double, std::milli>(end-start).count() << " ms\n";
+    outputFile << std::chrono::duration<double, std::milli>(end-start).count() << ",";
+}
+
+void testSplayTree(int size, std::ofstream& outputFile) {
+    SplayTree<int> splayTree;
+    auto start = std::chrono::steady_clock::now();
+
+    // for insertion
+    for(int i=0; i < size; i++) {
+        splayTree.insert(rand());
+    }
+    auto end = std::chrono::steady_clock::now();
+    std::cout << "SplayTree - Insertion for " << size << " elements: " << std::chrono::duration<double, std::milli>(end-start).count() << " ms\n";
+    outputFile << std::chrono::duration<double, std::milli>(end-start).count() << ",";
+
+    // for deletion
+    for(int i=0; i < size; i++) {
+        splayTree.remove(rand());
+    }
+    end = std::chrono::steady_clock::now();
+    std::cout << "SplayTree - Deletion for " << size << " elements: " << std::chrono::duration<double, std::milli>(end-start).count() << " ms\n";
+    outputFile << std::chrono::duration<double, std::milli>(end-start).count() << ",";
+
+    // for find
+    for(int i=0; i < size; i++) {
+        splayTree.find(rand());
+    }
+    end = std::chrono::steady_clock::now();
+    std::cout << "SplayTree - Find for " << size << " elements: " << std::chrono::duration<double, std::milli>(end-start).count() << " ms\n";
+    outputFile << std::chrono::duration<double, std::milli>(end-start).count() << ",";
+}
+
 int main() {
-//    Treap<int> t;
-    SplayTree<int> t;
-    t.insert(1);
-    t.insert(46);
-    t.insert(16);
-    t.insert(1029);
-    t.insert(85);
-    t.insert(0);
-    t.print();
+    int testSize = 1000000;
 
-    t.remove(16);
-    t.print();
+    std::ofstream outputFile("timing_data.csv");
+    outputFile << "Insertion_Treap,Deletion_Treap,Find_Treap,Insertion_SplayTree,Deletion_SplayTree,Find_SplayTree\n";
 
-    std::cout << (t.find(4) ? "Found\n" : "Not Found\n");
-    std::cout << (t.find(1029) ? "Found\n" : "Not Found\n");
-
-    const Node<int> *result = t.lte_max(47);
-    std::cout << result->data << "\n";
-    result = t.mte_min(48);
-    std::cout << result->data << "\n";
+    testTreap(testSize, outputFile);
+    testSplayTree(testSize, outputFile);
 
     return 0;
 }
