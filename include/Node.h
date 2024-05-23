@@ -9,8 +9,9 @@ public:
     T data;
     Node *left;
     Node *right;
+    Node *parent;
 
-    explicit Node(T value) : data(value), left(nullptr), right(nullptr) {}
+    explicit Node(T value) : data(value), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
 template<typename T>

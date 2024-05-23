@@ -1,12 +1,15 @@
 #include <iostream>
 #include "include/Treap.h"
+#include "include/SplayTree.h"
 
 int main() {
-    Treap<int> t;
+//    Treap<int> t;
+    SplayTree<int> t;
     t.insert(1);
     t.insert(46);
     t.insert(16);
     t.insert(1029);
+    t.insert(85);
     t.insert(0);
     t.print();
 
@@ -16,7 +19,7 @@ int main() {
     std::cout << (t.find(4) ? "Found\n" : "Not Found\n");
     std::cout << (t.find(1029) ? "Found\n" : "Not Found\n");
 
-    const TreapNode<int> *result = t.lte_max(47);
+    const Node<int> *result = t.lte_max(47);
     std::cout << result->data << "\n";
     result = t.mte_min(48);
     std::cout << result->data << "\n";
